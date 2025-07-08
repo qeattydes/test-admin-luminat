@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luminat Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .logo-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(107, 114, 128, 0.1);
+        }
+        
+        .sidebar-item.active {
+            background-color: rgba(107, 114, 128, 0.2);
+            border-left: 3px solid #4b5563;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-processing {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-shipped {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-pending {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+        
+        .status-cancelled {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .transition-slow {
+            transition: all 0.3s ease;
+        }
+        
+        .table-row:hover {
+            background-color: rgba(249, 250, 251, 0.8);
+        }
+    </style>
+</head>
+<body class="flex h-screen bg-gray-50">
+    <!-- Sidebar -->
+    <div class="hidden md:flex md:flex-shrink-0">
+        <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
+            <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <span class="logo-font text-2xl font-semibold text-gray-800">Luminat</span>
+                </div>
+            </div>
+            <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+                <div class="space-y-1">
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item active transition-slow">
+                        <i class="fas fa-tachometer-alt w-5 h-5 mr-3 text-gray-500"></i>
+                        Dashboard
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-lightbulb w-5 h-5 mr-3 text-gray-500"></i>
+                        Products
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-project-diagram w-5 h-5 mr-3 text-gray-500"></i>
+                        Projects
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-shopping-bag w-5 h-5 mr-3 text-gray-500"></i>
+                        Orders
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-users w-5 h-5 mr-3 text-gray-500"></i>
+                        Customers
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-user-shield w-5 h-5 mr-3 text-gray-500"></i>
+                        Users & Roles
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-cog w-5 h-5 mr-3 text-gray-500"></i>
+                        Settings
+                    </a>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center">
+                    <img class="w-10 h-10 rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">Sarah Johnson</p>
+                        <p class="text-xs font-medium text-gray-500">Admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main content -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+        <!-- Top navigation -->
+        <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-white">
+            <div class="flex items-center">
+                <button class="md:hidden mr-4 text-gray-500 focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="text-lg font-medium text-gray-800">Dashboard</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
+                    <i class="fas fa-envelope"></i>
+                </button>
+                <div class="relative">
+                    <button class="flex items-center text-gray-500 focus:outline-none">
+                        <span class="mr-2">EN</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main content area -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <!-- Stats cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover transition-slow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Total Revenue</p>
+                            <p class="text-2xl font-semibold text-gray-800 mt-1">$24,780</p>
+                            <p class="text-xs text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 12.5% from last month</p>
+                        </div>
+                        <div class="p-3 rounded-full bg-blue-50 text-blue-500">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover transition-slow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">New Orders</p>
+                            <p class="text-2xl font-semibold text-gray-800 mt-1">1,245</p>
+                            <p class="text-xs text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 8.2% from last month</p>
+                        </div>
+                        <div class="p-3 rounded-full bg-purple-50 text-purple-500">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover transition-slow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Products</p>
+                            <p class="text-2xl font-semibold text-gray-800 mt-1">187</p>
+                            <p class="text-xs text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 3 new this week</p>
+                        </div>
+                        <div class="p-3 rounded-full bg-green-50 text-green-500">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover transition-slow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Active Projects</p>
+                            <p class="text-2xl font-semibold text-gray-800 mt-1">32</p>
+                            <p class="text-xs text-red-500 mt-1"><i class="fas fa-arrow-down mr-1"></i> 2 completed</p>
+                        </div>
+                        <div class="p-3 rounded-full bg-yellow-50 text-yellow-500">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent orders and products -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-lg font-medium text-gray-800">Recent Orders</h2>
+                                <button class="text-sm font-medium text-blue-600 hover:text-blue-500">View all</button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="table-row transition-slow">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#LUM-4521</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">James Wilson</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 15, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="status-badge status-processing">Processing</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,245</td>
+                                    </tr>
+                                    <tr class="table-row transition-slow">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#LUM-4520</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Emma Thompson</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 14, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="status-badge status-shipped">Shipped</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$890</td>
+                                    </tr>
+                                    <tr class="table-row transition-slow">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#LUM-4519</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Michael Brown</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 14, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="status-badge status-pending">Pending</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$2,450</td>
+                                    </tr>
+                                    <tr class="table-row transition-slow">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#LUM-4518</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Sophia Martinez</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 13, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="status-badge status-cancelled">Cancelled</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,780</td>
+                                    </tr>
+                                    <tr class="table-row transition-slow">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#LUM-4517</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">David Wilson</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 12, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="status-badge status-shipped">Shipped</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$3,245</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-lg font-medium text-gray-800">New Products</h2>
+                                <button class="text-sm font-medium text-blue-600 hover:text-blue-500">View all</button>
+                            </div>
+                        </div>
+                        <div class="divide-y divide-gray-200">
+                            <div class="p-4 flex items-start transition-slow hover:bg-gray-50">
+                                <div class="flex-shrink-0">
+                                    <img class="h-16 w-16 rounded-md object-cover" src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Product">
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-sm font-medium text-gray-800">Aurora Pendant</h3>
+                                    <p class="text-xs text-gray-500 mt-1">Modern lighting</p>
+                                    <div class="mt-2 flex items-center">
+                                        <span class="text-sm font-medium text-gray-800">$349</span>
+                                        <span class="ml-2 text-xs text-green-500">+12% sales</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 flex items-start transition-slow hover:bg-gray-50">
+                                <div class="flex-shrink-0">
+                                    <img class="h-16 w-16 rounded-md object-cover" src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Product">
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-sm font-medium text-gray-800">Nova Floor Lamp</h3>
+                                    <p class="text-xs text-gray-500 mt-1">Contemporary design</p>
+                                    <div class="mt-2 flex items-center">
+                                        <span class="text-sm font-medium text-gray-800">$599</span>
+                                        <span class="ml-2 text-xs text-green-500">+8% sales</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 flex items-start transition-slow hover:bg-gray-50">
+                                <div class="flex-shrink-0">
+                                    <img class="h-16 w-16 rounded-md object-cover" src="https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Product">
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-sm font-medium text-gray-800">Luna Table Lamp</h3>
+                                    <p class="text-xs text-gray-500 mt-1">Minimalist style</p>
+                                    <div class="mt-2 flex items-center">
+                                        <span class="text-sm font-medium text-gray-800">$249</span>
+                                        <span class="ml-2 text-xs text-green-500">+15% sales</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 flex items-start transition-slow hover:bg-gray-50">
+                                <div class="flex-shrink-0">
+                                    <img class="h-16 w-16 rounded-md object-cover" src="https://images.unsplash.com/photo-1556740734-9f001d34b5b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Product">
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-sm font-medium text-gray-800">Stella Wall Sconce</h3>
+                                    <p class="text-xs text-gray-500 mt-1">Ambient lighting</p>
+                                    <div class="mt-2 flex items-center">
+                                        <span class="text-sm font-medium text-gray-800">$179</span>
+                                        <span class="ml-2 text-xs text-green-500">New</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Projects section -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-medium text-gray-800">Active Projects</h2>
+                        <button class="text-sm font-medium text-blue-600 hover:text-blue-500">View all</button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden transition-slow hover:shadow-md">
+                        <div class="h-48 bg-gray-100 flex items-center justify-center">
+                            <i class="fas fa-image text-3xl text-gray-300"></i>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-medium text-gray-800">Hotel Lumen</h3>
+                            <p class="text-sm text-gray-500 mt-1">Boutique hotel lighting concept</p>
+                            <div class="mt-4 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-xs font-medium text-gray-500">Progress:</span>
+                                    <span class="ml-2 text-xs font-medium text-gray-800">65%</span>
+                                </div>
+                                <div class="w-24 bg-gray-200 rounded-full h-1.5">
+                                    <div class="bg-blue-600 h-1.5 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden transition-slow hover:shadow-md">
+                        <div class="h-48 bg-gray-100 flex items-center justify-center">
+                            <i class="fas fa-image text-3xl text-gray-300"></i>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-medium text-gray-800">Restaurant Glow</h3>
+                            <p class="text-sm text-gray-500 mt-1">Ambient lighting for fine dining</p>
+                            <div class="mt-4 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-xs font-medium text-gray-500">Progress:</span>
+                                    <span class="ml-2 text-xs font-medium text-gray-800">42%</span>
+                                </div>
+                                <div class="w-24 bg-gray-200 rounded-full h-1.5">
+                                    <div class="bg-blue-600 h-1.5 rounded-full" style="width: 42%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden transition-slow hover:shadow-md">
+                        <div class="h-48 bg-gray-100 flex items-center justify-center">
+                            <i class="fas fa-image text-3xl text-gray-300"></i>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-medium text-gray-800">Office Radiance</h3>
+                            <p class="text-sm text-gray-500 mt-1">Modern workspace lighting</p>
+                            <div class="mt-4 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-xs font-medium text-gray-500">Progress:</span>
+                                    <span class="ml-2 text-xs font-medium text-gray-800">78%</span>
+                                </div>
+                                <div class="w-24 bg-gray-200 rounded-full h-1.5">
+                                    <div class="bg-blue-600 h-1.5 rounded-full" style="width: 78%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('.md\\:hidden');
+            const sidebar = document.querySelector('.md\\:flex');
+            
+            if (mobileMenuButton && sidebar) {
+                mobileMenuButton.addEventListener('click', function() {
+                    sidebar.classList.toggle('hidden');
+                });
+            }
+            
+            // Add active class to sidebar items on click
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
