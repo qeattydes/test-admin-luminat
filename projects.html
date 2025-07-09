@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Luminat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+
+        .logo-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(107, 114, 128, 0.1);
+        }
+
+        .sidebar-item.active {
+            background-color: rgba(107, 114, 128, 0.2);
+            border-left: 3px solid #4b5563;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-planning {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .status-in-progress {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-on-hold {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .transition-slow {
+            transition: all 0.3s ease;
+        }
+
+        .table-row:hover {
+            background-color: rgba(249, 250, 251, 0.8);
+        }
+
+        .project-tab {
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .project-tab.active {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen bg-gray-50">
+    <!-- Sidebar -->
+    <div class="hidden md:flex md:flex-shrink-0">
+        <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
+            <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <span class="logo-font text-2xl font-semibold text-gray-800">Luminat</span>
+                </div>
+            </div>
+            <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+                <div class="space-y-1">
+                    <a href="index.html"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-tachometer-alt w-5 h-5 mr-3 text-gray-500"></i>
+                        Dashboard
+                    </a>
+                    <a href="products.html"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-lightbulb w-5 h-5 mr-3 text-gray-500"></i>
+                        Products
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item active transition-slow">
+                        <i class="fas fa-project-diagram w-5 h-5 mr-3 text-gray-500"></i>
+                        Projects
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-shopping-bag w-5 h-5 mr-3 text-gray-500"></i>
+                        Orders
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-users w-5 h-5 mr-3 text-gray-500"></i>
+                        Customers
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-user-shield w-5 h-5 mr-3 text-gray-500"></i>
+                        Users & Roles
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-cog w-5 h-5 mr-3 text-gray-500"></i>
+                        Settings
+                    </a>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center">
+                    <img class="w-10 h-10 rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg"
+                        alt="Profile">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">Sarah Johnson</p>
+                        <p class="text-xs font-medium text-gray-500">Admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+        <!-- Top navigation -->
+        <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-white">
+            <div class="flex items-center">
+                <button class="md:hidden mr-4 text-gray-500 focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="text-lg font-medium text-gray-800">Projects</h1>
+            </div>
+            <div class="flex items-center space-x-4 relative">
+                <!-- Notifications -->
+                <div class="relative">
+                    <button id="bellBtn" type="button"
+                        class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <div id="bellDropdown"
+                        class="hidden absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded shadow-lg z-50">
+                        <div class="p-4 border-b font-semibold text-gray-700">Notifications</div>
+                        <ul class="divide-y text-sm">
+                            <li class="p-3">New project update: Hotel Lumen</li>
+                            <li class="p-3">Client meeting scheduled for Restaurant Glow</li>
+                            <li class="p-3">3 new project inquiries</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Messages -->
+                <div class="relative">
+                    <button id="mailBtn" type="button"
+                        class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
+                        <i class="fas fa-envelope"></i>
+                    </button>
+                    <div id="mailDropdown"
+                        class="hidden absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded shadow-lg z-50">
+                        <div class="p-4 border-b font-semibold text-gray-700">Project Inquiries</div>
+                        <ul class="divide-y text-sm">
+                            <li class="p-3">
+                                <p class="font-medium">New inquiry: Corporate Office</p>
+                                <p class="text-gray-500 text-xs mt-1">Requesting lighting design for new headquarters</p>
+                            </li>
+                            <li class="p-3">
+                                <p class="font-medium">Follow-up: Boutique Hotel</p>
+                                <p class="text-gray-500 text-xs mt-1">Asking about timeline for proposal</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Language -->
+                <div class="relative">
+                    <button class="flex items-center text-gray-500 focus:outline-none">
+                        <span class="mr-2">EN</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <!-- Project Filters -->
+            <div class="flex flex-wrap items-center justify-between mb-6 gap-4">
+                <div class="flex flex-wrap gap-4">
+                    <select class="bg-white border border-gray-300 text-sm rounded-md px-4 py-2">
+                        <option>All Status</option>
+                        <option>Planning</option>
+                        <option>In Progress</option>
+                        <option>Completed</option>
+                        <option>On Hold</option>
+                    </select>
+                    <select class="bg-white border border-gray-300 text-sm rounded-md px-4 py-2">
+                        <option>All Types</option>
+                        <option>Residential</option>
+                        <option>Commercial</option>
+                        <option>Hospitality</option>
+                        <option>Public Space</option>
+                    </select>
+                    <input type="text" placeholder="Search projects..." class="bg-white border border-gray-300 text-sm rounded-md px-4 py-2 w-64">
+                </div>
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition-slow">
+                    <i class="fas fa-plus mr-2"></i> New Project
+                </button>
+            </div>
+
+            <!-- Project Tabs -->
+            <div class="flex border-b border-gray-200 mb-6">
+                <button class="project-tab active px-4 py-2 text-sm font-medium">All Projects (32)</button>
+                <button class="project-tab px-4 py-2 text-sm font-medium">Planning (8)</button>
+                <button class="project-tab px-4 py-2 text-sm font-medium">In Progress (18)</button>
+                <button class="project-tab px-4 py-2 text-sm font-medium">Completed (4)</button>
+                <button class="project-tab px-4 py-2 text-sm font-medium">On Hold (2)</button>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Project Card 1 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-slow hover:shadow-md">
+                    <div class="relative">
+                        <div class="h-48 bg-gray-100 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Hotel Lumen" class="h-full w-full object-cover">
+                        </div>
+                        <span class="absolute top-3 right-3 status-badge status-in-progress">In Progress</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800">Hotel Lumen</h3>
+                                <p class="text-sm text-gray-500 mt-1">Boutique hotel lighting concept</p>
+                            </div>
+                            <div class="text-xs text-gray-500">#PRJ-0042</div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-500">Progress</span>
+                                <span class="font-medium text-gray-800">65%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full progress-bar">
+                                <div class="bg-blue-600 progress-bar" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 flex justify-between text-sm">
+                            <div>
+                                <span class="text-gray-500">Start Date</span>
+                                <p class="font-medium text-gray-800">May 15, 2023</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-gray-500">Due Date</span>
+                                <p class="font-medium text-gray-800">Aug 30, 2023</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <div class="flex -space-x-2">
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah">
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/32.jpg" alt="John">
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma">
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs font-medium">+2</div>
+                                </div>
+                                <a href="project-detail.html" class="text-blue-600 text-sm hover:underline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-slow hover:shadow-md">
+                    <div class="relative">
+                        <div class="h-48 bg-gray-100 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Restaurant Glow" class="h-full w-full object-cover">
+                        </div>
+                        <span class="absolute top-3 right-3 status-badge status-in-progress">In Progress</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800">Restaurant Glow</h3>
+                                <p class="text-sm text-gray-500 mt-1">Ambient lighting for fine dining</p>
+                            </div>
+                            <div class="text-xs text-gray-500">#PRJ-0038</div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-500">Progress</span>
+                                <span class="font-medium text-gray-800">42%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full progress-bar">
+                                <div class="bg-blue-600 progress-bar" style="width: 42%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 flex justify-between text-sm">
+                            <div>
+                                <span class="text-gray-500">Start Date</span>
+                                <p class="font-medium text-gray-800">Jun 1, 2023</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-gray-500">Due Date</span>
+                                <p class="font-medium text-gray-800">Sep 15, 2023</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <div class="flex -space-x-2">
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah">
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/75.jpg" alt="Michael">
+                                </div>
+                                <a href="project-detail.html" class="text-blue-600 text-sm hover:underline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-slow hover:shadow-md">
+                    <div class="relative">
+                        <div class="h-48 bg-gray-100 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Office Radiance" class="h-full w-full object-cover">
+                        </div>
+                        <span class="absolute top-3 right-3 status-badge status-completed">Completed</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800">Office Radiance</h3>
+                                <p class="text-sm text-gray-500 mt-1">Modern workspace lighting</p>
+                            </div>
+                            <div class="text-xs text-gray-500">#PRJ-0032</div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-500">Progress</span>
+                                <span class="font-medium text-gray-800">100%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full progress-bar">
+                                <div class="bg-green-500 progress-bar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 flex justify-between text-sm">
+                            <div>
+                                <span class="text-gray-500">Start Date</span>
+                                <p class="font-medium text-gray-800">Mar 10, 2023</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-gray-500">Completed</span>
+                                <p class="font-medium text-gray-800">May 28, 2023</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <div class="flex -space-x-2">
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/32.jpg" alt="John">
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma">
+                                </div>
+                                <a href="project-detail.html" class="text-blue-600 text-sm hover:underline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 4 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-slow hover:shadow-md">
+                    <div class="relative">
+                        <div class="h-48 bg-gray-100 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Museum of Light" class="h-full w-full object-cover">
+                        </div>
+                        <span class="absolute top-3 right-3 status-badge status-planning">Planning</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800">Museum of Light</h3>
+                                <p class="text-sm text-gray-500 mt-1">Interactive light installations</p>
+                            </div>
+                            <div class="text-xs text-gray-500">#PRJ-0045</div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-500">Progress</span>
+                                <span class="font-medium text-gray-800">15%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full progress-bar">
+                                <div class="bg-blue-600 progress-bar" style="width: 15%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 flex justify-between text-sm">
+                            <div>
+                                <span class="text-gray-500">Start Date</span>
+                                <p class="font-medium text-gray-800">Jul 1, 2023</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-gray-500">Due Date</span>
+                                <p class="font-medium text-gray-800">Dec 15, 2023</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <div class="flex -space-x-2">
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah">
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/75.jpg" alt="Michael">
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs font-medium">+3</div>
+                                </div>
+                                <a href="project-detail.html" class="text-blue-600 text-sm hover:underline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 5 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-slow hover:shadow-md">
+                    <div class="relative">
+                        <div class="h-48 bg-gray-100 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Urban Loft" class="h-full w-full object-cover">
+                        </div>
+                        <span class="absolute top-3 right-3 status-badge status-on-hold">On Hold</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800">Urban Loft</h3>
+                                <p class="text-sm text-gray-500 mt-1">Residential lighting design</p>
+                            </div>
+                            <div class="text-xs text-gray-500">#PRJ-0035</div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-500">Progress</span>
+                                <span class="font-medium text-gray-800">30%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full progress-bar">
+                                <div class="bg-yellow-500 progress-bar" style="width: 30%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 flex justify-between text-sm">
+                            <div>
+                                <span class="text-gray-500">Start Date</span>
+                                <p class="font-medium text-gray-800">Apr 5, 2023</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-gray-500">Paused</span>
+                                <p class="font-medium text-gray-800">May 20, 2023</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <div class="flex -space-x-2">
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma">
+                                </div>
+                                <a href="project-detail.html" class="text-blue-600 text-sm hover:underline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 6 - Add New Project -->
+                <div class="border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center transition-slow hover:border-blue-500 hover:bg-blue-50 cursor-pointer">
+                    <div class="text-center p-6">
+                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 text-blue-600 mb-3">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-800">Add New Project</h3>
+                        <p class="mt-1 text-sm text-gray-500">Create a new project</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-8 flex items-center justify-between">
+                <div class="text-sm text-gray-500">
+                    Showing <span class="font-medium">1</span> to <span class="font-medium">6</span> of <span class="font-medium">32</span> projects
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        Previous
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                        1
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        2
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        3
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Notification dropdown functionality
+            const bellBtn = document.getElementById('bellBtn');
+            const mailBtn = document.getElementById('mailBtn');
+            const bellDropdown = document.getElementById('bellDropdown');
+            const mailDropdown = document.getElementById('mailDropdown');
+
+            document.addEventListener('click', function (e) {
+                if (bellBtn.contains(e.target)) {
+                    bellDropdown.classList.toggle('hidden');
+                    mailDropdown.classList.add('hidden');
+                } else if (mailBtn.contains(e.target)) {
+                    mailDropdown.classList.toggle('hidden');
+                    bellDropdown.classList.add('hidden');
+                } else {
+                    bellDropdown.classList.add('hidden');
+                    mailDropdown.classList.add('hidden');
+                }
+            });
+
+            // Project tab functionality
+            const projectTabs = document.querySelectorAll('.project-tab');
+            projectTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    projectTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    // Here you would typically filter projects based on the selected tab
+                });
+            });
+
+            // Mobile menu toggle functionality
+            const mobileMenuButton = document.querySelector('.md\\:hidden');
+            const sidebar = document.querySelector('.md\\:flex');
+            
+            if (mobileMenuButton && sidebar) {
+                mobileMenuButton.addEventListener('click', function() {
+                    sidebar.classList.toggle('hidden');
+                });
+            }
+            
+            // Add active class to sidebar items on click
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+
+    <!-- Add this right before the closing </body> tag in the projects.html file -->
+<div id="projectModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div id="modalBackdrop" class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <!-- Modal container -->
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+            <div class="bg-white px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-medium text-gray-800" id="modalProjectName">Hotel Lumen</h3>
+                    <button id="closeModal" type="button" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="text-sm text-gray-500 mt-1" id="modalProjectDesc">Boutique hotel lighting concept</p>
+            </div>
+            
+            <div class="px-6 py-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Project Overview -->
+                    <div class="md:col-span-2">
+                        <div class="mb-6">
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Overview</h4>
+                            <p class="text-sm text-gray-600" id="modalProjectOverview">
+                                Full lighting design for a new boutique hotel in downtown. Includes lobby lighting, 
+                                restaurant ambient lighting, guest room lighting solutions, and exterior facade lighting. 
+                                The project emphasizes energy efficiency and smart lighting controls.
+                            </p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Project Details</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-xs text-gray-500">Project ID</p>
+                                    <p class="text-sm font-medium text-gray-800" id="modalProjectId">#PRJ-0042</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Status</p>
+                                    <p class="text-sm font-medium" id="modalProjectStatus"><span class="status-badge status-in-progress">In Progress</span></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Start Date</p>
+                                    <p class="text-sm font-medium text-gray-800" id="modalProjectStart">May 15, 2023</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Due Date</p>
+                                    <p class="text-sm font-medium text-gray-800" id="modalProjectDue">Aug 30, 2023</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Client</p>
+                                    <p class="text-sm font-medium text-gray-800" id="modalProjectClient">Lumen Hospitality Group</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Budget</p>
+                                    <p class="text-sm font-medium text-gray-800" id="modalProjectBudget">$85,000</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Progress</h4>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-800" id="modalProjectProgressText">65% Complete</span>
+                                <span class="text-xs text-gray-500">12 tasks remaining</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" id="modalProjectProgressBar" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Recent Updates</h4>
+                            <div class="space-y-4">
+                                <div class="flex">
+                                    <div class="flex-shrink-0 mr-3">
+                                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="John">
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-800">John Smith <span class="text-xs text-gray-500 ml-2">2 days ago</span></p>
+                                        <p class="text-sm text-gray-600 mt-1">Completed lighting design for the lobby area. Waiting for client feedback on the proposed fixtures.</p>
+                                    </div>
+                                </div>
+                                <div class="flex">
+                                    <div class="flex-shrink-0 mr-3">
+                                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah">
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-800">Sarah Johnson <span class="text-xs text-gray-500 ml-2">1 week ago</span></p>
+                                        <p class="text-sm text-gray-600 mt-1">Client approved the restaurant lighting concept. Moving forward with procurement.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Team & Actions -->
+                    <div>
+                        <div class="mb-6">
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Team Members</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-800">Sarah Johnson</p>
+                                        <p class="text-xs text-gray-500">Project Lead</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="John">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-800">John Smith</p>
+                                        <p class="text-xs text-gray-500">Lighting Designer</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-800">Emma Davis</p>
+                                        <p class="text-xs text-gray-500">Technical Specialist</p>
+                                    </div>
+                                </div>
+                                <button class="mt-2 text-sm text-blue-600 hover:text-blue-500 flex items-center">
+                                    <i class="fas fa-plus mr-1 text-xs"></i> Add Team Member
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Project Files</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center p-2 border border-gray-200 rounded-md">
+                                    <div class="p-2 bg-blue-50 text-blue-600 rounded-md mr-3">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-800 truncate">Lighting_Plan.pdf</p>
+                                        <p class="text-xs text-gray-500">2.4 MB</p>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-500">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center p-2 border border-gray-200 rounded-md">
+                                    <div class="p-2 bg-purple-50 text-purple-600 rounded-md mr-3">
+                                        <i class="fas fa-file-excel"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-800 truncate">Fixture_List.xlsx</p>
+                                        <p class="text-xs text-gray-500">1.1 MB</p>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-500">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                                <button class="mt-2 text-sm text-blue-600 hover:text-blue-500 flex items-center">
+                                    <i class="fas fa-plus mr-1 text-xs"></i> Upload File
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Quick Actions</h4>
+                            <div class="space-y-2">
+                                <button class="w-full flex items-center justify-between px-4 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    <span>View Full Timeline</span>
+                                    <i class="fas fa-chevron-right text-xs text-gray-400"></i>
+                                </button>
+                                <button class="w-full flex items-center justify-between px-4 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    <span>Create Task</span>
+                                    <i class="fas fa-chevron-right text-xs text-gray-400"></i>
+                                </button>
+                                <button class="w-full flex items-center justify-between px-4 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    <span>Generate Report</span>
+                                    <i class="fas fa-chevron-right text-xs text-gray-400"></i>
+                                </button>
+                                <button class="w-full flex items-center justify-between px-4 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    <span>Share Project</span>
+                                    <i class="fas fa-chevron-right text-xs text-gray-400"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 px-6 py-3 flex justify-between">
+                <button class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                    Edit Project
+                </button>
+                <div>
+                    <button class="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 mr-2">
+                        Save Changes
+                    </button>
+                    <button id="closeModalBottom" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Modal functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('projectModal');
+        const closeButtons = document.querySelectorAll('#closeModal, #closeModalBottom, #modalBackdrop');
+        const viewDetailButtons = document.querySelectorAll('[href="project-detail.html"]');
+        
+        // Replace all "View Details" links with modal triggers
+        viewDetailButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Get project data from the card (in a real app, this would come from your data source)
+                const card = this.closest('.bg-white');
+                const projectName = card.querySelector('h3').textContent;
+                const projectDesc = card.querySelector('p.text-sm').textContent;
+                const projectStatus = card.querySelector('.status-badge').textContent;
+                const statusClass = card.querySelector('.status-badge').classList[1];
+                const progress = card.querySelector('.bg-blue-600').style.width;
+                const startDate = card.querySelectorAll('p.font-medium')[0].textContent;
+                const dueDate = card.querySelectorAll('p.font-medium')[1].textContent;
+                
+                // Set modal content
+                document.getElementById('modalProjectName').textContent = projectName;
+                document.getElementById('modalProjectDesc').textContent = projectDesc;
+                document.getElementById('modalProjectStatus').innerHTML = `<span class="status-badge ${statusClass}">${projectStatus}</span>`;
+                document.getElementById('modalProjectProgressText').textContent = `${progress} Complete`;
+                document.getElementById('modalProjectProgressBar').style.width = progress;
+                document.getElementById('modalProjectStart').textContent = startDate;
+                document.getElementById('modalProjectDue').textContent = dueDate;
+                
+                // Show modal
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Close modal handlers
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            });
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    });
+</script>
+</body>
+
+</html>
