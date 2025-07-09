@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .logo-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(107, 114, 128, 0.1);
+        }
+        
+        .sidebar-item.active {
+            background-color: rgba(107, 114, 128, 0.2);
+            border-left: 3px solid #4b5563;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-processing {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-shipped {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-pending {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+        
+        .status-cancelled {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .transition-slow {
+            transition: all 0.3s ease;
+        }
+        
+        .table-row:hover {
+            background-color: rgba(249, 250, 251, 0.8);
+        }
+    </style>
+</head>
+<body class="flex h-screen bg-gray-50">
+    <!-- Sidebar -->
+    <div class="hidden md:flex md:flex-shrink-0">
+        <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
+            <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <span class="logo-font text-2xl font-semibold text-gray-800">Luminat</span>
+                </div>
+            </div>
+            <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+                <div class="space-y-1">
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item active transition-slow">
+                        <i class="fas fa-tachometer-alt w-5 h-5 mr-3 text-gray-500"></i>
+                        Dashboard
+                    </a>
+                    <a href="/products.html" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-lightbulb w-5 h-5 mr-3 text-gray-500"></i>
+                        Products
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-project-diagram w-5 h-5 mr-3 text-gray-500"></i>
+                        Projects
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-shopping-bag w-5 h-5 mr-3 text-gray-500"></i>
+                        Orders
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-users w-5 h-5 mr-3 text-gray-500"></i>
+                        Customers
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-user-shield w-5 h-5 mr-3 text-gray-500"></i>
+                        Users & Roles
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-cog w-5 h-5 mr-3 text-gray-500"></i>
+                        Settings
+                    </a>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center">
+                    <img class="w-10 h-10 rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">Sarah Johnson</p>
+                        <p class="text-xs font-medium text-gray-500">Admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main content -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+        <!-- Top navigation -->
+        <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-white">
+            <div class="flex items-center">
+                <button class="md:hidden mr-4 text-gray-500 focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="text-lg font-medium text-gray-800">Dashboard</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
+                    <i class="fas fa-envelope"></i>
+                </button>
+                <div class="relative">
+                    <button class="flex items-center text-gray-500 focus:outline-none">
+                        <span class="mr-2">EN</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main content area -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <h1 class="text-2xl font-semibold text-gray-800 mb-6">Все продукты</h1>
+
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-4 mb-6">
+    <select id="categoryFilter" class="bg-white border border-gray-300 text-sm rounded-md px-4 py-2">
+      <option value="">Все категории</option>
+      <option value="Подвесной">Подвесные</option>
+      <option value="Настенный">Настенные</option>
+      <option value="Настольный">Настольные</option>
+      <option value="Напольный">Напольные</option>
+      <option value="Инсталляция">Инсталляции</option>
+    </select>
+    <select id="collectionFilter" class="bg-white border border-gray-300 text-sm rounded-md px-4 py-2">
+      <option value="">Все коллекции</option>
+      <option value="RAW">RAW</option>
+      <option value="SOFT MODERN">SOFT MODERN</option>
+      <option value="ATELIER">ATELIER</option>
+    </select>
+    <input id="searchInput" type="text" placeholder="Поиск по названию..." class="bg-white border border-gray-300 text-sm rounded-md px-4 py-2 w-64">
+    <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">Добавить товар</button>
+  </div>
+
+  <!-- Product Table -->
+  <div class="bg-white rounded-lg shadow-sm overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200" id="productTable">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Фото</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Название</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Категория</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Коллекция</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Цена</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Действия</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr data-category="Настенный" data-collection="RAW" data-name="Edge">
+          <td class="px-6 py-4"><img class="h-12 w-12 rounded object-cover" src="https://source.unsplash.com/random/80x80?lamp1" alt="Edge" /></td>
+          <td class="px-6 py-4 text-sm text-gray-800">Edge</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Настенный</td>
+          <td class="px-6 py-4 text-sm text-gray-500">RAW</td>
+          <td class="px-6 py-4 text-sm text-gray-800">$420</td>
+          <td class="px-6 py-4"><span class="status-badge status-processing">В продаже</span></td>
+          <td class="px-6 py-4 text-right text-sm">
+            <a href="#" class="text-blue-600 hover:underline mr-2">Редактировать</a>
+            <a href="#" class="text-red-500 hover:underline">Удалить</a>
+          </td>
+        </tr>
+        <tr data-category="Подвесной" data-collection="SOFT MODERN" data-name="Oval.001">
+          <td class="px-6 py-4"><img class="h-12 w-12 rounded object-cover" src="https://source.unsplash.com/random/80x80?lamp2" alt="Oval.001" /></td>
+          <td class="px-6 py-4 text-sm text-gray-800">Oval.001</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Подвесной</td>
+          <td class="px-6 py-4 text-sm text-gray-500">SOFT MODERN</td>
+          <td class="px-6 py-4 text-sm text-gray-800">$365</td>
+          <td class="px-6 py-4"><span class="status-badge status-processing">В продаже</span></td>
+          <td class="px-6 py-4 text-right text-sm">
+            <a href="#" class="text-blue-600 hover:underline mr-2">Редактировать</a>
+            <a href="#" class="text-red-500 hover:underline">Удалить</a>
+          </td>
+        </tr>
+        <tr data-category="Инсталляция" data-collection="ATELIER" data-name="Orbit">
+          <td class="px-6 py-4"><img class="h-12 w-12 rounded object-cover" src="https://source.unsplash.com/random/80x80?lamp3" alt="Orbit" /></td>
+          <td class="px-6 py-4 text-sm text-gray-800">Orbit</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Инсталляция</td>
+          <td class="px-6 py-4 text-sm text-gray-500">ATELIER</td>
+          <td class="px-6 py-4 text-sm text-gray-800">$980</td>
+          <td class="px-6 py-4"><span class="status-badge status-processing">В продаже</span></td>
+          <td class="px-6 py-4 text-right text-sm">
+            <a href="#" class="text-blue-600 hover:underline mr-2">Редактировать</a>
+            <a href="#" class="text-red-500 hover:underline">Удалить</a>
+          </td>
+        </tr>
+        <!-- Добавь другие товары по аналогии -->
+      </tbody>
+    </table>
+  </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('.md\\:hidden');
+            const sidebar = document.querySelector('.md\\:flex');
+            
+            if (mobileMenuButton && sidebar) {
+                mobileMenuButton.addEventListener('click', function() {
+                    sidebar.classList.toggle('hidden');
+                });
+            }
+            
+            // Add active class to sidebar items on click
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
