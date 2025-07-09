@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пользователи и роли | Luminat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .logo-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(107, 114, 128, 0.1);
+        }
+        
+        .sidebar-item.active {
+            background-color: rgba(107, 114, 128, 0.2);
+            border-left: 3px solid #4b5563;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-inactive {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .transition-slow {
+            transition: all 0.3s ease;
+        }
+        
+        .table-row:hover {
+            background-color: rgba(249, 250, 251, 0.8);
+        }
+        
+        .role-admin {
+            background-color: #6366f1;
+            color: white;
+        }
+        
+        .role-manager {
+            background-color: #8b5cf6;
+            color: white;
+        }
+        
+        .role-editor {
+            background-color: #ec4899;
+            color: white;
+        }
+        
+        .role-viewer {
+            background-color: #14b8a6;
+            color: white;
+        }
+    </style>
+</head>
+<body class="flex h-screen bg-gray-50">
+    <!-- Боковая панель -->
+    <div class="hidden md:flex md:flex-shrink-0">
+        <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
+            <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <span class="logo-font text-2xl font-semibold text-gray-800">Luminat</span>
+                </div>
+            </div>
+            <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+                <div class="space-y-1">
+                    <a href="index.html" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-tachometer-alt w-5 h-5 mr-3 text-gray-500"></i>
+                        Панель управления
+                    </a>
+                    <a href="products.html" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-lightbulb w-5 h-5 mr-3 text-gray-500"></i>
+                        Товары
+                    </a>
+                    <a href="projects.html" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-project-diagram w-5 h-5 mr-3 text-gray-500"></i>
+                        Проекты
+                    </a>
+                    <a href="orders.html" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-shopping-bag w-5 h-5 mr-3 text-gray-500"></i>
+                        Заказы
+                    </a>
+                    <a href="#" class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item active transition-slow">
+                        <i class="fas fa-user-shield w-5 h-5 mr-3 text-gray-500"></i>
+                        Пользователи и роли
+                    </a>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center">
+                    <img class="w-10 h-10 rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Профиль">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">Сара Джонсон</p>
+                        <p class="text-xs font-medium text-gray-500">Администратор</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Основное содержимое -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+        <!-- Верхняя навигация -->
+        <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-white">
+            <div class="flex items-center">
+                <button class="md:hidden mr-4 text-gray-500 focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="text-lg font-medium text-gray-800">Пользователи и роли</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="addUserBtn" class="bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm hover:bg-blue-700">
+                    <i class="fas fa-plus mr-2"></i> Добавить пользователя
+                </button>
+            </div>
+        </div>
+        
+        <!-- Основная область содержимого -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <div class="flex flex-wrap items-center justify-between mb-6 gap-4">
+                <div class="flex flex-wrap gap-4">
+                    <input type="text" placeholder="Поиск по имени или email" class="border border-gray-300 rounded-md px-4 py-2 text-sm w-64">
+                    <select class="border border-gray-300 rounded-md px-4 py-2 text-sm">
+                        <option>Все роли</option>
+                        <option>Администратор</option>
+                        <option>Менеджер</option>
+                        <option>Редактор</option>
+                        <option>Наблюдатель</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-4 py-2 text-sm">
+                        <option>Все статусы</option>
+                        <option>Активен</option>
+                        <option>Неактивен</option>
+                        <option>Ожидает подтверждения</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Таблица пользователей -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Пользователь
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Email
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Роль
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Статус
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Последний вход
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Действия
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="table-row transition-slow">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Аватар">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">Сара Джонсон</div>
+                                            <div class="text-sm text-gray-500">ID: ADM-001</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    admin@luminat.com
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full role-admin">Администратор</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="status-badge status-active">Активен</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    15.05.2023 14:30
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button class="text-blue-600 hover:text-blue-900 mr-3 edit-user-btn">Изменить</button>
+                                    <button class="text-gray-600 hover:text-gray-900" disabled title="Нельзя удалить себя">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="table-row transition-slow">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Аватар">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">Иван Петров</div>
+                                            <div class="text-sm text-gray-500">ID: MNG-002</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    manager@luminat.com
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full role-manager">Менеджер</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="status-badge status-active">Активен</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    14.05.2023 10:15
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button class="text-blue-600 hover:text-blue-900 mr-3 edit-user-btn">Изменить</button>
+                                    <button class="text-red-600 hover:text-red-900 delete-user-btn"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="table-row transition-slow">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Аватар">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">Елена Смирнова</div>
+                                            <div class="text-sm text-gray-500">ID: EDT-003</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    editor@luminat.com
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full role-editor">Редактор</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="status-badge status-inactive">Неактивен</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    10.05.2023 16:45
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button class="text-blue-600 hover:text-blue-900 mr-3 edit-user-btn">Изменить</button>
+                                    <button class="text-red-600 hover:text-red-900 delete-user-btn"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="table-row transition-slow">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/75.jpg" alt="Аватар">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">Алексей Козлов</div>
+                                            <div class="text-sm text-gray-500">ID: VWR-004</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    viewer@luminat.com
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full role-viewer">Наблюдатель</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="status-badge status-active">Активен</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    12.05.2023 09:20
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button class="text-blue-600 hover:text-blue-900 mr-3 edit-user-btn">Изменить</button>
+                                    <button class="text-red-600 hover:text-red-900 delete-user-btn"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="table-row transition-slow">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">Мария Иванова</div>
+                                            <div class="text-sm text-gray-500">ID: PND-005</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    newuser@luminat.com
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-800">Не назначена</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="status-badge status-pending">Ожидает подтверждения</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    -
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button class="text-blue-600 hover:text-blue-900 mr-3 edit-user-btn">Изменить</button>
+                                    <button class="text-red-600 hover:text-red-900 delete-user-btn"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Пагинация -->
+            <div class="mt-6 flex items-center justify-between">
+                <div class="text-sm text-gray-500">
+                    Показано <span class="font-medium">1</span> - <span class="font-medium">5</span> из <span class="font-medium">12</span> пользователей
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        Назад
+                    </button>
+                    <button class="px-3 py-1 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                        1
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        2
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        3
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        Вперед
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления/редактирования пользователя -->
+    <div id="userModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Фон -->
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+
+            <!-- Модальное окно -->
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-medium text-gray-800" id="modalTitle">Добавить пользователя</h3>
+                        <button id="closeModal" type="button" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="px-6 py-4">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="userName" class="block text-sm font-medium text-gray-700 mb-1">ФИО</label>
+                            <input type="text" id="userName" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div>
+                            <label for="userEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="userEmail" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="userRole" class="block text-sm font-medium text-gray-700 mb-1">Роль</label>
+                                <select id="userRole" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="admin">Администратор</option>
+                                    <option value="manager">Менеджер</option>
+                                    <option value="editor">Редактор</option>
+                                    <option value="viewer">Наблюдатель</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="userStatus" class="block text-sm font-medium text-gray-700 mb-1">Статус</label>
+                                <select id="userStatus" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="active">Активен</option>
+                                    <option value="inactive">Неактивен</option>
+                                    <option value="pending">Ожидает подтверждения</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="passwordFields">
+                            <label for="userPassword" class="block text-sm font-medium text-gray-700 mb-1">Пароль</label>
+                            <input type="password" id="userPassword" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <p class="mt-1 text-xs text-gray-500">Минимум 8 символов</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Разрешения</label>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="permProducts" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    <label for="permProducts" class="ml-2 block text-sm text-gray-700">Управление товарами</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="permProjects" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    <label for="permProjects" class="ml-2 block text-sm text-gray-700">Управление проектами</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="permOrders" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    <label for="permOrders" class="ml-2 block text-sm text-gray-700">Управление заказами</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="permUsers" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    <label for="permUsers" class="ml-2 block text-sm text-gray-700">Управление пользователями</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 px-6 py-3 flex justify-between">
+                    <button id="cancelModal" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">
+                        Отменить
+                    </button>
+                    <button id="saveUser" class="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                        Сохранить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения удаления -->
+    <div id="confirmModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-6 py-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-exclamation text-red-600"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-800" id="modalConfirmTitle">Подтверждение удаления</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">Вы уверены, что хотите удалить этого пользователя? Это действие нельзя отменить.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-6 py-3 flex justify-end">
+                    <button id="cancelDelete" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 mr-3">
+                        Отмена
+                    </button>
+                    <button id="confirmDelete" class="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700">
+                        Удалить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Элементы модальных окон
+            const userModal = document.getElementById('userModal');
+            const confirmModal = document.getElementById('confirmModal');
+            const addUserBtn = document.getElementById('addUserBtn');
+            const editUserBtns = document.querySelectorAll('.edit-user-btn');
+            const deleteUserBtns = document.querySelectorAll('.delete-user-btn');
+            const closeModalBtn = document.getElementById('closeModal');
+            const cancelModalBtn = document.getElementById('cancelModal');
+            const cancelDeleteBtn = document.getElementById('cancelDelete');
+            const confirmDeleteBtn = document.getElementById('confirmDelete');
+            
+            // Открытие модального окна добавления пользователя
+            addUserBtn.addEventListener('click', function() {
+                document.getElementById('modalTitle').textContent = 'Добавить пользователя';
+                document.getElementById('passwordFields').style.display = 'block';
+                userModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // Открытие модального окна редактирования пользователя
+            editUserBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const name = row.querySelector('div.text-sm.font-medium').textContent;
+                    const email = row.querySelector('td:nth-child(2)').textContent;
+                    const role = row.querySelector('td:nth-child(3) span').textContent.trim();
+                    const status = row.querySelector('td:nth-child(4) span').textContent.trim();
+                    
+                    document.getElementById('modalTitle').textContent = 'Редактировать пользователя';
+                    document.getElementById('userName').value = name;
+                    document.getElementById('userEmail').value = email;
+                    
+                    // Установка роли
+                    const roleSelect = document.getElementById('userRole');
+                    for (let i = 0; i < roleSelect.options.length; i++) {
+                        if (roleSelect.options[i].text === role) {
+                            roleSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    
+                    // Установка статуса
+                    const statusSelect = document.getElementById('userStatus');
+                    for (let i = 0; i < statusSelect.options.length; i++) {
+                        if (statusSelect.options[i].text === status) {
+                            statusSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    
+                    // Скрываем поле пароля при редактировании
+                    document.getElementById('passwordFields').style.display = 'none';
+                    
+                    userModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // Открытие модального окна подтверждения удаления
+            deleteUserBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const name = row.querySelector('div.text-sm.font-medium').textContent;
+                    document.getElementById('modalConfirmTitle').textContent = `Удалить пользователя ${name}?`;
+                    confirmModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // Закрытие модальных окон
+            function closeAllModals() {
+                userModal.classList.add('hidden');
+                confirmModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+            
+            closeModalBtn.addEventListener('click', closeAllModals);
+            cancelModalBtn.addEventListener('click', closeAllModals);
+            cancelDeleteBtn.addEventListener('click', closeAllModals);
+            
+            // Подтверждение удаления
+            confirmDeleteBtn.addEventListener('click', function() {
+                // Здесь будет логика удаления пользователя
+                alert('Пользователь удален!');
+                closeAllModals();
+            });
+            
+            // Сохранение пользователя
+            document.getElementById('saveUser').addEventListener('click', function() {
+                // Здесь будет логика сохранения пользователя
+                alert('Пользователь сохранен!');
+                closeAllModals();
+            });
+            
+            // Закрытие по клику на фон
+            window.addEventListener('click', function(event) {
+                if (event.target === userModal) {
+                    closeAllModals();
+                }
+                if (event.target === confirmModal) {
+                    closeAllModals();
+                }
+            });
+            
+            // Мобильное меню
+            const mobileMenuButton = document.querySelector('.md\\:hidden');
+            const sidebar = document.querySelector('.md\\:flex');
+            
+            if (mobileMenuButton && sidebar) {
+                mobileMenuButton.addEventListener('click', function() {
+                    sidebar.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
