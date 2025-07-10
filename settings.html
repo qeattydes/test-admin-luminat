@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки | Luminat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+
+        .logo-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(107, 114, 128, 0.1);
+        }
+
+        .sidebar-item.active {
+            background-color: rgba(107, 114, 128, 0.2);
+            border-left: 3px solid #4b5563;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-processing {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-shipped {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-pending {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .status-cancelled {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .transition-slow {
+            transition: all 0.3s ease;
+        }
+
+        .table-row:hover {
+            background-color: rgba(249, 250, 251, 0.8);
+        }
+        
+        .settings-tab {
+            border-bottom: 2px solid transparent;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+        
+        .settings-tab.active {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+        }
+        
+        .settings-tab:hover:not(.active) {
+            color: #4b5563;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen bg-gray-50">
+    <!-- Sidebar -->
+    <div class="hidden md:flex md:flex-shrink-0">
+        <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
+            <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <span class="logo-font text-2xl font-semibold text-gray-800">Luminat</span>
+                </div>
+            </div>
+            <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+                <div class="space-y-1">
+                    <a href="index.html"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-tachometer-alt w-5 h-5 mr-3 text-gray-500"></i>
+                        Dashboard
+                    </a>
+                    <a href="products.html"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-lightbulb w-5 h-5 mr-3 text-gray-500"></i>
+                        Products
+                    </a>
+                    <a href="projects.html"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-project-diagram w-5 h-5 mr-3 text-gray-500"></i>
+                        Projects
+                    </a>
+                    <a href="orders.html"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-shopping-bag w-5 h-5 mr-3 text-gray-500"></i>
+                        Orders
+                    </a>
+                    <a href="users.html"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item transition-slow">
+                        <i class="fas fa-users w-5 h-5 mr-3 text-gray-500"></i>
+                        Users
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-2 py-3 text-sm font-medium rounded-md sidebar-item active transition-slow">
+                        <i class="fas fa-cog w-5 h-5 mr-3 text-gray-500"></i>
+                        Settings
+                    </a>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center">
+                    <img class="w-10 h-10 rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg"
+                        alt="Profile">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">Sarah Johnson</p>
+                        <p class="text-xs font-medium text-gray-500">Admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+        <!-- Top navigation -->
+        <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-white">
+            <div class="flex items-center">
+                <button class="md:hidden mr-4 text-gray-500 focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="text-lg font-medium text-gray-800">Settings</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
+                    <i class="fas fa-envelope"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <!-- Settings tabs -->
+            <div class="flex border-b border-gray-200 mb-6 overflow-x-auto">
+                <button class="settings-tab active" data-tab="general">General</button>
+                <button class="settings-tab" data-tab="notifications">Notifications</button>
+                <button class="settings-tab" data-tab="security">Security</button>
+                <button class="settings-tab" data-tab="integrations">Integrations</button>
+                <button class="settings-tab" data-tab="backup">Backup</button>
+            </div>
+
+            <!-- General Settings -->
+            <div id="general" class="tab-content active">
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h2 class="text-lg font-medium text-gray-800 mb-4">Company Information</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                                <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2" value="Luminat">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Company Logo</label>
+                                <div class="flex items-center">
+                                    <img src="https://via.placeholder.com/150x50?text=Luminat+Logo" alt="Company Logo" class="h-10 mr-4">
+                                    <button class="text-sm text-blue-600 hover:text-blue-500">Change</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                <textarea class="w-full border border-gray-300 rounded-md px-3 py-2" rows="3">123 Light Street, Moscow, Russia</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
+                            <input type="email" class="w-full border border-gray-300 rounded-md px-3 py-2" value="info@luminat.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <input type="tel" class="w-full border border-gray-300 rounded-md px-3 py-2" value="+7 (495) 123-4567">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Website</label>
+                            <input type="url" class="w-full border border-gray-300 rounded-md px-3 py-2" value="https://luminat.com">
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">Save Changes</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="text-lg font-medium text-gray-800 mb-4">Regional Settings</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2">
+                                <option>English</option>
+                                <option selected>Russian</option>
+                                <option>French</option>
+                                <option>German</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Timezone</label>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2">
+                                <option>(GMT+3) Moscow</option>
+                                <option>(GMT+4) Samara</option>
+                                <option>(GMT+5) Yekaterinburg</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date Format</label>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2">
+                                <option>MM/DD/YYYY</option>
+                                <option selected>DD/MM/YYYY</option>
+                                <option>YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications Settings -->
+            <div id="notifications" class="tab-content">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="text-lg font-medium text-gray-800 mb-6">Notification Preferences</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-md font-medium text-gray-800 mb-3">Email Notifications</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-700">New Orders</label>
+                                        <p class="text-xs text-gray-500">Receive email when new order is placed</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" checked>
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-700">Order Status Changes</label>
+                                        <p class="text-xs text-gray-500">Receive email when order status changes</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" checked>
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-700">New User Registration</label>
+                                        <p class="text-xs text-gray-500">Receive email when new user registers</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-md font-medium text-gray-800 mb-3">System Alerts</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-700">Low Stock</label>
+                                        <p class="text-xs text-gray-500">Receive alert when product stock is low</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" checked>
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-700">System Updates</label>
+                                        <p class="text-xs text-gray-500">Receive notifications about system updates</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" checked>
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div id="security" class="tab-content">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="text-lg font-medium text-gray-800 mb-6">Security Settings</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-md font-medium text-gray-800 mb-3">Two-Factor Authentication</h3>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-700">Add an extra layer of security to your account</p>
+                                </div>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">Enable 2FA</button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-md font-medium text-gray-800 mb-3">Active Sessions</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Device</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">IP Address</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Active</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                Chrome, Windows 10
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                192.168.1.1
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                15.05.2023 14:30
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-red-600 hover:text-red-900">Revoke</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                Safari, iPhone
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                192.168.1.2
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                14.05.2023 10:15
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-red-600 hover:text-red-900">Revoke</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integrations Settings -->
+            <div id="integrations" class="tab-content">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="text-lg font-medium text-gray-800 mb-6">Integrations</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="h-6 mr-3">
+                                    <h3 class="text-md font-medium text-gray-800">Google Analytics</h3>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                            <div class="mt-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tracking ID</label>
+                                <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2" value="UA-12345678-1">
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Yandex_Logo.svg" alt="Yandex" class="h-6 mr-3">
+                                    <h3 class="text-md font-medium text-gray-800">Yandex Metrica</h3>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                            <div class="mt-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Counter ID</label>
+                                <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter Yandex Metrica ID">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backup Settings -->
+            <div id="backup" class="tab-content">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="text-lg font-medium text-gray-800 mb-6">Backup & Restore</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-md font-medium text-gray-800 mb-3">Automatic Backups</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
+                                    <select class="w-full border border-gray-300 rounded-md px-3 py-2">
+                                        <option>Daily</option>
+                                        <option selected>Weekly</option>
+                                        <option>Monthly</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Storage</label>
+                                    <select class="w-full border border-gray-300 rounded-md px-3 py-2">
+                                        <option selected>Local Server</option>
+                                        <option>Google Drive</option>
+                                        <option>Dropbox</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-md font-medium text-gray-800 mb-3">Manual Backup</h3>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-700">Last backup: 15.05.2023 10:30</p>
+                                </div>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                                    <i class="fas fa-database mr-2"></i>Create Backup
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-md font-medium text-gray-800 mb-3">Backup History</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                15.05.2023 10:30
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                Full Backup
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                45.2 MB
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3">Download</button>
+                                                <button class="text-red-600 hover:text-red-900">Delete</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                08.05.2023 10:30
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                Full Backup
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                43.8 MB
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3">Download</button>
+                                                <button class="text-red-600 hover:text-red-900">Delete</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.settings-tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Show the selected tab content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Mobile menu toggle functionality
+            const mobileMenuButton = document.querySelector('.md\\:hidden');
+            const sidebar = document.querySelector('.md\\:flex');
+            
+            if (mobileMenuButton && sidebar) {
+                mobileMenuButton.addEventListener('click', function() {
+                    sidebar.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
